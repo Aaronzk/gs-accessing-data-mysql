@@ -24,7 +24,7 @@ public class ScheduledApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ScheduledApplication.class, args);
-        logger.info("定时任务页面管理地址:{}", "http://localhost:8089/scheduled/task/taskList");
+        logger.info("程序启动完成.");
     }
 
 }

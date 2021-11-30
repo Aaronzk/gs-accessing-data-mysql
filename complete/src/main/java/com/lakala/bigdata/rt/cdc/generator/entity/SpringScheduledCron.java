@@ -26,6 +26,17 @@ public class SpringScheduledCron {
     @Column(name = "status", nullable = false)
     private Integer status;
 
+    @Column(name = "max_running")
+    private Integer maxRunning;
+
+    public Integer getMaxRunning() {
+        return maxRunning;
+    }
+
+    public void setMaxRunning(Integer maxRunning) {
+        this.maxRunning = maxRunning;
+    }
+
     public Integer getStatus() {
         return status;
     }

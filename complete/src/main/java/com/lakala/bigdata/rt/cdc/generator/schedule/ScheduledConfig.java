@@ -35,13 +35,17 @@ public class ScheduledConfig implements SchedulingConfigurer {
                 throw new IllegalArgumentException(springScheduledCron.getCronKey() + "未纳入到spring管理", e);
             }
             Assert.isAssignable(ScheduledOfTask.class, task.getClass(), "定时任务类必须实现ScheduledOfTask接口");
-            // 可以通过改变数据库数据进而实现动态改变执行周期
-            taskRegistrar.addTriggerTask(((Runnable) task),
-                    triggerContext -> {
-                        String cronExpression = cronRepository.findByCronKey(springScheduledCron.getCronKey()).getCronExpression();
-                        return new CronTrigger(cronExpression).nextExecutionTime(triggerContext);
-                    }
-            );
+
+            Integer maxRunning = springScheduledCron.getMaxRunning();
+            for (int i = 0; i < maxRunning; i++) {
+                // 可以通过改变数据库数据进而实现动态改变执行周期
+                taskRegistrar.addTriggerTask(((Runnable) task),
+                        triggerContext -> {
+                            String cronExpression = cronRepository.findByCronKey(springScheduledCron.getCronKey()).getCronExpression();
+                            return new CronTrigger(cronExpression).nextExecutionTime(triggerContext);
+                        }
+                );
+            }
         }
     }
     @Bean
